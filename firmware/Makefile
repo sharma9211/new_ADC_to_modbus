@@ -35,10 +35,9 @@ SRCS = \
  Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_spi.c \
  Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_spi_ex.c
 
-
 OBJS=$(SRCS:.c=.o)
 
-all: firmware.elf firmware.bin
+all: firmware.elf firmware.bin firmware.hex
 
 firmware.elf: $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
@@ -46,5 +45,8 @@ firmware.elf: $(OBJS)
 firmware.bin: firmware.elf
 	$(OBJCOPY) -O binary $< $@
 
+firmware.hex: firmware.elf
+	$(OBJCOPY) -O ihex $< $@
+
 clean:
-	rm -f Core/Src/*.o Drivers/STM32H5xx_HAL_Driver/Src/*.o firmware.elf firmware.bin
+	rm -f Core/Src/*.o Drivers/STM32H5xx_HAL_Driver/Src/*.o firmware.elf firmware.bin firmware.hex
