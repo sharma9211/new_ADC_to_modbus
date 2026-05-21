@@ -33,6 +33,40 @@ The goal is to make ADC data accessible to any Modbus master tool (e.g., QModMas
 
 ---
 
+
+## 📌 How to Build
+1. Prerequisites
+Install ARM GNU Toolchain (e.g., arm-none-eabi-gcc, arm-none-eabi-objcopy)
+Install Make (Windows ke liye MSYS2/MinGW ya Git Bash, Linux/Mac par default hota hai)
+Optional: STM32CubeProgrammer (flashing ke liye)
+
+2. Clone the Repository
+git clone https://github.com/sharma9211/new_ADC_to_modbus.git
+cd new_ADC_to_modbus/firmware
+
+3. Clean Previous Builds
+make clean
+
+4. Build Firmware
+make
+
+Ye command generate karega:
+firmware.elf → debugging ke liye
+firmware.bin → raw binary flashing tools ke liye
+firmware.hex → recommended for STM32CubeProgrammer
+
+5. Flash to Board
+STM32CubeProgrammer CLI (ST‑Link via SWD):
+STM32_Programmer_CLI -c port=SWD -d firmware.hex -rst
+
+STM32CubeProgrammer CLI (UART bootloader via COM port):
+STM32_Programmer_CLI -c port=COM3 -d firmware.hex -rst // (COM port apne adapter ke hisab se set karo)
+
+✅ Notes
+Always run make clean before rebuilding if you change source files.
+Use .hex file for production flashing.
+Use .elf file for debugging with STM32CubeIDE or GDB/OpenOCD.
+
 ## 📌 System Components
 - **STM32H563 MCU**: Runs HAL drivers, Modbus stack, and manages peripherals.
 - **ADS127L14 ADC**: Provides 24‑bit high‑resolution samples via SPI4.
